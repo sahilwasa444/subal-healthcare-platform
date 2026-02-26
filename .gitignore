@@ -1,0 +1,19 @@
+# Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# ML Models
+ml-service/models/
+*.safetensors
+*.zip
+
+# Node
+node_modules/
+
+# Env
+.env
+
+# VSCode
+.vscode/
