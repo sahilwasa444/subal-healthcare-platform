@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subal Pharma — Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon">✚</div>
+            <span class="brand-name">Subal Pharma</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="login.html"    class="nav-link active">👤 Login</a></li>
+            <li><a href="register.html" class="nav-link">📝 Register</a></li>
+            <li><a href="index.html"    class="nav-link">💊 Prescription</a></li>
+        </ul>
+    </nav>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-logo">✚</div>
+            <h2 class="auth-title">Welcome Back</h2>
+            <p class="auth-sub">Login to your Subal Pharma account</p>
+
+            <div id="authError"   class="msg-error"   style="display:none"></div>
+            <div id="authSuccess" class="msg-success" style="display:none"></div>
+
+            <form id="loginForm" class="auth-form" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-upload" id="authBtn">Login</button>
+            </form>
+
+            <p class="auth-switch">Don't have an account? <a href="register.html">Register here</a></p>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
+
+</body>
+</html>

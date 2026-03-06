@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subal Pharma - Orders</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">+</div>
+      <span class="brand-name">Subal Pharma</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="nav-link">Prescription</a></li>
+      <li><a href="cart.html" class="nav-link">Cart</a></li>
+      <li><a href="orders.html" class="nav-link active">Orders</a></li>
+      <li><a href="#" class="nav-link" onclick="logout()">Logout</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero hero-sm">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">My Orders</h1>
+      <p class="hero-sub">Track placed orders and payment status</p>
+    </div>
+    <div class="hero-shape"></div>
+  </section>
+
+  <main class="main">
+    <section class="cart-card">
+      <div class="cart-header">
+        <h2>Order History</h2>
+        <span id="orderCount" class="results-count"></span>
+      </div>
+      <div id="ordersList">
+        <div class="loading">Loading orders...</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><p>&copy; 2025 Subal Pharma. All rights reserved.</p></footer>
+
+  <script src="api.js"></script>
+  <script src="orders.js"></script>
+</body>
+</html>

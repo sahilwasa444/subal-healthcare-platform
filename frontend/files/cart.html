@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subal Pharma — Cart</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon">✚</div>
+            <span class="brand-name">Subal Pharma</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html"  class="nav-link">💊 Prescription</a></li>
+            <li><a href="cart.html"   class="nav-link active">🛒 Cart</a></li>
+            <li><a href="orders.html" class="nav-link">📦 Orders</a></li>
+            <li><a href="#" class="nav-link" onclick="logout()">🚪 Logout</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero hero-sm">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">My Cart</h1>
+            <p class="hero-sub">Review and place your order</p>
+        </div>
+        <div class="hero-shape"></div>
+    </section>
+
+    <main class="main">
+        <div class="cart-layout">
+
+            <!-- Cart Items -->
+            <section class="cart-card">
+                <div class="cart-header">
+                    <h2>Cart Items</h2>
+                    <span id="cartCount" class="results-count"></span>
+                </div>
+                <div id="cartItems">
+                    <div class="loading">Loading cart…</div>
+                </div>
+            </section>
+
+            <!-- Order Summary -->
+            <aside class="order-summary">
+                <h3>Order Summary</h3>
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cartTotal">₹0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery</span>
+                    <span class="free-tag">FREE</span>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-row total-row">
+                    <span>Total</span>
+                    <span id="cartTotalFinal">₹0.00</span>
+                </div>
+                <button class="btn-upload" id="placeOrderBtn" onclick="placeOrder()">
+                    ✅ Place Order
+                </button>
+                <a href="index.html" class="btn-back">← Continue Shopping</a>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="footer"><p>© 2025 Subal Pharma. All rights reserved.</p></footer>
+
+    <script src="api.js"></script>
+    <script src="cart.js"></script>
+    <script>
+        // Mirror total to final
+        const obs = new MutationObserver(() => {
+            const t = document.getElementById("cartTotal");
+            const f = document.getElementById("cartTotalFinal");
+            if (t && f) f.textContent = t.textContent;
+        });
+        const el = document.getElementById("cartTotal");
+        if (el) obs.observe(el, { childList: true, subtree: true, characterData: true });
+    </script>
+
+</body>
+</html>

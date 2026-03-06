@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subal Pharma — Register</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="auth-page">
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon">✚</div>
+            <span class="brand-name">Subal Pharma</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="login.html"    class="nav-link">👤 Login</a></li>
+            <li><a href="register.html" class="nav-link active">📝 Register</a></li>
+            <li><a href="index.html"    class="nav-link">💊 Prescription</a></li>
+        </ul>
+    </nav>
+
+    <main class="auth-main">
+        <div class="auth-card">
+            <div class="auth-logo">✚</div>
+            <h2 class="auth-title">Create Account</h2>
+            <p class="auth-sub">Join Subal Pharma today</p>
+
+            <div id="authError"   class="msg-error"   style="display:none"></div>
+            <div id="authSuccess" class="msg-success" style="display:none"></div>
+
+            <form id="registerForm" class="auth-form" novalidate>
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Sahil Wasalwar" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Min. 6 characters" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Re-enter password" required>
+                </div>
+                <button type="submit" class="btn-upload" id="authBtn">Register</button>
+            </form>
+
+            <p class="auth-switch">Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+    </main>
+
+    <script src="api.js"></script>
+    <script src="auth.js"></script>
+
+</body>
+</html>

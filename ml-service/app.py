@@ -7,10 +7,19 @@ from PIL import Image
 from fastapi import FastAPI, UploadFile, File
 from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 import easyocr
+from fastapi.middleware.cors import CORSMiddleware
 
 from matcher import match_multiple
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://127.0.0.1:5500", "http://localhost:5500"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -42,7 +51,8 @@ def recognize_crop(crop_bgr):
     pixel_values = processor(images=pil_img, return_tensors="pt").pixel_values.to(device)
 
     with torch.no_grad():
-        generated_ids = model.generate(pixel_values, max_new_tokens=64)
+        generated_ids = model.generate(pixel_values, max_new_tokens=24)
+
 
     text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
     return text.strip()
@@ -55,8 +65,11 @@ async def predict(file: UploadFile = File(...)):
 
     np_img = np.frombuffer(contents, np.uint8)
     image = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
-
     detections = detector.readtext(image)
+    detections = sorted(detections, key=lambda x: x[2], reverse=True)[:12]
+
+
+
 
     extracted_lines = []
 
