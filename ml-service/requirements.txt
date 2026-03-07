@@ -7,3 +7,4 @@ pillow
 transformers
 torch
 easyocr
+python-bidi==0.4.2
