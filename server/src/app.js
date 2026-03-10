@@ -7,13 +7,16 @@ const orderRoutes = require("./routes/order.routes");
 
 const authRoutes = require("./routes/auth.routes");
 const drugRoutes = require("./routes/drug.routes");
+const mlRoutes = require("./routes/ml.routes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/", mlRoutes);
 
 app.use("/api/auth", authRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("Healthcare API Running 🚀");

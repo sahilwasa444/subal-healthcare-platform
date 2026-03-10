@@ -1,5 +1,5 @@
 /* ============================================
-   SUBAL PHARMA — js/upload.js
+   SUBAL PHARMA � js/upload.js
    Prescription upload + medicine display
    ============================================ */
 
@@ -53,13 +53,13 @@ function initDropZone() {
 }
 
 function handleFileSelect(file) {
-    const allowed = ["image/jpeg","image/png","image/gif","image/webp","application/pdf"];
+    const allowed = ["image/jpeg", "image/png", "image/gif", "image/webp", "application/pdf"];
     if (!allowed.includes(file.type)) {
-        showToast("❌ Only JPG, PNG, or PDF files are allowed.", "error");
+        showToast("? Only JPG, PNG, or PDF files are allowed.", "error");
         return;
     }
     if (file.size > 10 * 1024 * 1024) {
-        showToast("❌ File must be under 10MB.", "error");
+        showToast("? File must be under 10MB.", "error");
         return;
     }
     selectedFile = file;
@@ -75,46 +75,46 @@ function clearFile() {
 }
 
 function formatSize(bytes) {
-    if (bytes < 1024)        return bytes + " B";
+    if (bytes < 1024) return bytes + " B";
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
 }
 
 /* --------------------------------------------------
-   UPLOAD PRESCRIPTION  ← calls api.js
+   UPLOAD PRESCRIPTION
 -------------------------------------------------- */
 async function uploadPrescription() {
     if (!selectedFile) {
-        showToast("⚠️ Please select a prescription file first.", "error");
+        showToast("?? Please select a prescription file first.", "error");
         return;
     }
 
-    const btn          = document.getElementById("uploadBtn");
+    const btn = document.getElementById("uploadBtn");
     const progressWrap = document.getElementById("progressWrap");
-    const progressBar  = document.getElementById("progressBar");
+    const progressBar = document.getElementById("progressBar");
 
-    // UI: loading state
-    btn.disabled   = true;
-    btn.textContent = "Uploading…";
+    btn.disabled = true;
+    btn.textContent = "Uploading...";
     progressWrap.style.display = "block";
     animateProgress(progressBar, 85, 2000);
 
     try {
-        // ← Real API call from api.js
         const data = await apiUploadPrescription(selectedFile);
 
         progressBar.style.width = "100%";
-        setTimeout(() => { progressWrap.style.display = "none"; progressBar.style.width = "0%"; }, 400);
+        setTimeout(() => {
+            progressWrap.style.display = "none";
+            progressBar.style.width = "0%";
+        }, 400);
 
-        displayResults(data.matched_drugs);
-        showToast("✅ Prescription uploaded successfully!", "success");
-
+        displayResults(data.matched_drugs, data.unmatched_words);
+        showToast("? Prescription uploaded successfully!", "success");
     } catch (err) {
         progressWrap.style.display = "none";
-        progressBar.style.width    = "0%";
-        showToast("❌ " + err.message, "error");
+        progressBar.style.width = "0%";
+        showToast("? " + err.message, "error");
     } finally {
-        btn.disabled    = false;
+        btn.disabled = false;
         btn.textContent = "Upload Prescription";
     }
 }
@@ -122,12 +122,23 @@ async function uploadPrescription() {
 /* --------------------------------------------------
    DISPLAY MATCHED MEDICINES
 -------------------------------------------------- */
-function displayResults(drugs) {
-    const resultsDiv   = document.getElementById("results");
+function displayResults(drugs, unmatchedWords = []) {
+    const resultsDiv = document.getElementById("results");
     const resultsCount = document.getElementById("resultsCount");
 
     if (!drugs || drugs.length === 0) {
-        resultsDiv.innerHTML = `<div class="empty-state"><span class="empty-icon">💊</span><p>No medicines matched. Try a clearer image.</p></div>`;
+        const missedMarkup = unmatchedWords.length
+            ? `
+                <div class="missed-results">
+                    <p class="missed-title">Could not match these medicines:</p>
+                    <div class="missed-list">
+                        ${unmatchedWords.map((word) => `<span class="missed-pill">${word}</span>`).join("")}
+                    </div>
+                </div>
+            `
+            : `<p>No medicine names could be identified. Try a clearer image.</p>`;
+
+        resultsDiv.innerHTML = `<div class="empty-state"><span class="empty-icon">??</span>${missedMarkup}</div>`;
         if (resultsCount) resultsCount.textContent = "";
         return;
     }
@@ -141,36 +152,49 @@ function displayResults(drugs) {
     drugs.forEach((drug, i) => {
         const card = document.createElement("div");
         card.className = "medicine-card";
-        card.style.animationDelay = (i * 0.07) + "s";
+        card.style.animationDelay = i * 0.07 + "s";
         card.innerHTML = `
             <div class="med-name">${drug.brand || drug.name}</div>
-            <div class="med-dosage">Salt: ${drug.salt || "—"}</div>
-            <div class="med-price">₹${drug.price}</div>
+            <div class="med-dosage">Salt: ${drug.salt || "�"}</div>
+            <div class="med-price">?${drug.price}</div>
             <button class="btn-add" onclick="addToCart('${drug._id}')">+ Add to Cart</button>
         `;
         grid.appendChild(card);
     });
 
     resultsDiv.appendChild(grid);
+
+    if (unmatchedWords.length) {
+        const missedWrap = document.createElement("div");
+        missedWrap.className = "missed-results";
+        missedWrap.innerHTML = `
+            <p class="missed-title">Not matched in database:</p>
+            <div class="missed-list">
+                ${unmatchedWords.map((word) => `<span class="missed-pill">${word}</span>`).join("")}
+            </div>
+        `;
+        resultsDiv.appendChild(missedWrap);
+    }
+
     resultsDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
 /* --------------------------------------------------
-   ADD TO CART  ← calls api.js
+   ADD TO CART
 -------------------------------------------------- */
 async function addToCart(productId) {
     if (!isLoggedIn()) {
-        showToast("⚠️ Please login to add items to cart.", "error");
+        showToast("?? Please login to add items to cart.", "error");
         setTimeout(() => window.location.href = "login.html", 1500);
         return;
     }
 
     try {
         const data = await apiAddToCart(productId, 1);
-        showToast("🛒 " + (data.message || "Added to cart!"), "success");
+        showToast("?? " + (data.message || "Added to cart!"), "success");
         updateCartBadge();
     } catch (err) {
-        showToast("❌ " + err.message, "error");
+        showToast("? " + err.message, "error");
     }
 }
 
@@ -212,26 +236,28 @@ function showToast(message, type = "success") {
     toast.className = "toast";
     toast.textContent = message;
     Object.assign(toast.style, {
-        position:     "fixed",
-        bottom:       "28px",
-        right:        "28px",
-        background:   type === "success" ? "#0a4f3c" : "#c0392b",
-        color:        "#fff",
-        padding:      "12px 20px",
-        borderRadius: "10px",
-        fontSize:     ".9rem",
-        fontFamily:   "'DM Sans', sans-serif",
-        boxShadow:    "0 6px 24px rgba(0,0,0,.22)",
-        zIndex:       "9999",
-        transform:    "translateY(20px)",
-        opacity:      "0",
-        transition:   "all .3s ease",
-        maxWidth:     "320px",
+        position: "fixed",
+        bottom: "28px",
+        right: "28px",
+        background: type === "success" ? "#0a4f3c" : "#c0392b",
+        color: "#fff",
+        padding: "12px 20px",
+        borderRadius: "12px",
+        boxShadow: "0 8px 22px rgba(0,0,0,.15)",
+        zIndex: 9999,
+        fontSize: ".9rem",
+        opacity: "0",
+        transform: "translateY(12px)",
+        transition: "all .25s ease"
     });
     document.body.appendChild(toast);
-    requestAnimationFrame(() => { toast.style.transform = "translateY(0)"; toast.style.opacity = "1"; });
+    requestAnimationFrame(() => {
+        toast.style.opacity = "1";
+        toast.style.transform = "translateY(0)";
+    });
     setTimeout(() => {
-        toast.style.transform = "translateY(20px)"; toast.style.opacity = "0";
-        setTimeout(() => toast.remove(), 300);
-    }, 3500);
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(10px)";
+        setTimeout(() => toast.remove(), 240);
+    }, 2600);
 }

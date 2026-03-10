@@ -349,6 +349,20 @@ body {
 .empty-state { display: flex; flex-direction: column; align-items: center; gap: 10px; color: var(--muted); padding: 16px 0; }
 .empty-icon  { font-size: 2rem; opacity: .6; }
 .empty-state p { font-size: .9rem; font-weight: 300; }
+.missed-results { margin-top: 18px; width: 100%; }
+.missed-title { font-size: .88rem; font-weight: 600; color: var(--g800); margin-bottom: 10px; text-align: left; }
+.missed-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.missed-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #fff6e8;
+    border: 1px solid #f4d39b;
+    color: #8a5a00;
+    font-size: .82rem;
+    font-weight: 500;
+}
 
 .medicine-grid {
     display: grid;

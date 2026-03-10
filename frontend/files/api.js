@@ -3,7 +3,7 @@
    Base URLs + All API helper functions
    ============================================ */
 
-const ML_BASE_URL   = "http://127.0.0.1:8000";   // FastAPI / ML backend
+   // FastAPI / ML backend
 const NODE_BASE_URL = "http://localhost:5000";     // Node.js / Express backend
 
 /* --------------------------------------------------
@@ -60,13 +60,13 @@ async function apiUploadPrescription(file) {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch(`${ML_BASE_URL}/predict`, {
+    const response = await fetch(`${NODE_BASE_URL}/predict`, {
         method: "POST",
         body: formData
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || "Prediction failed");
-    return data;   // { matched_drugs: [...] }
+    return data;   // { matched_drugs: [...], unmatched_words: [...] }
 }
 
 /* --------------------------------------------------

@@ -8,3 +8,4 @@ transformers
 torch
 easyocr
 python-bidi==0.6.0
+rapidfuzz

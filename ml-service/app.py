@@ -53,23 +53,18 @@ def recognize_crop(crop_bgr):
     with torch.no_grad():
         generated_ids = model.generate(pixel_values, max_new_tokens=24)
 
-
     text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
     return text.strip()
 
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-
     contents = await file.read()
 
     np_img = np.frombuffer(contents, np.uint8)
     image = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
     detections = detector.readtext(image)
     detections = sorted(detections, key=lambda x: x[2], reverse=True)[:12]
-
-
-
 
     extracted_lines = []
 
@@ -94,12 +89,11 @@ async def predict(file: UploadFile = File(...)):
             extracted_lines.append(text)
 
     raw_text = "\n".join(extracted_lines)
-
     words = raw_text.replace("\n", " ").split()
-
-    matched_drugs = match_multiple(words)
+    match_result = match_multiple(words)
 
     return {
         "raw_text": raw_text,
-        "matched_drugs": matched_drugs
+        "matched_drugs": match_result["matched_drugs"],
+        "unmatched_words": match_result["unmatched_words"],
     }
